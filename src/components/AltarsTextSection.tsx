@@ -16,7 +16,7 @@ export default function AltarsTextSection() {
 
     // Compute width values for animation boundaries
     const fullTextWidth = textRef.current.scrollWidth;
-    const containerWidth = sectionRef.current.offsetWidth;
+    // const containerWidth = sectionRef.current.offsetWidth;
 
     // Set start and end X positions for left-to-right scroll
     const startX = fullTextWidth + 100; // text starts off-screen to the left

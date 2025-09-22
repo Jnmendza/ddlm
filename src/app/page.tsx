@@ -7,6 +7,7 @@ import imagesLoaded from "imagesloaded";
 import Hero from "@/components/Hero";
 import AltarsTextSection from "@/components/AltarsTextSection";
 import GalleryPanSection from "@/components/GalleryPanSection";
+import FoodSection from "@/components/FoodSection";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -104,16 +105,9 @@ export default function Page() {
         <GalleryPanSection count={3} />
         <GalleryPanSection count={4} />
         <GalleryPanSection count={3} />
-        <GalleryPanSection count={4} />
-
-        {/* Another text section if you want */}
-        <section className='altar-section-text' data-pan>
-          <div className='pan-wrapper text'>
-            Markets • Comparsas • Candlelight
-          </div>
-        </section>
       </div>
       {/* Footer spacer (just to feel the end) */}
+      <FoodSection />
       <footer className='df aic jcc footer-spacer'>
         <p>
           Images from <a href='https://unsplash.com/'>Unsplash</a>
