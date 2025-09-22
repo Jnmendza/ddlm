@@ -1,42 +1,157 @@
+/* src/app/globals.css */
+@import "tailwindcss";
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+  font-size: 16px;
+  --font-bebas: "Bebas Neue", sans-serif;
+  --font-cherish: "Cherish", serif;
+  --font-open-sans: "Open Sans", sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
+/* Optional: design tokens */
+@theme {
+  --color-ink: #0b0b0c;
+  --color-marigold: #ffb300;
+  --color-crimson: #a50044;
+  --color-indigo: #2a2d74;
+}
+
+body {
+  background: var(--color-ink);
+  color: #e5e5e5;
+  font-feature-settings: "ss01" on;
+}
+
+/* === Base (same as your CodePen, renamed) === */
+@media (max-width: 500px) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    font-size: 14px;
   }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
-  box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+::selection {
+  background: #87cd33;
+  color: white;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+body {
+  overflow: hidden; /* JS enables after load */
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
+    sans-serif, Apple Color Emoji, Segoe UI Emoji;
+}
+
+h1 {
+  font-size: 5rem;
+}
+h2 {
+  font-size: 2rem;
+}
+
+:any-link {
+  color: #4e9815;
+}
+
+.df {
+  display: flex;
+}
+.aic {
+  align-items: center;
+}
+.jcc {
+  justify-content: center;
+}
+
+.loader {
+  position: fixed;
+  inset: 0;
+  background: black;
+  color: white;
+  display: grid;
+  place-items: center;
+  z-index: 50;
+}
+
+/* Site wrapper just prevents horizontal scrollbars */
+.site-wrapper {
+  overflow-x: hidden;
+}
+
+/* PAN SECTIONS */
+.section-pan .pan-wrapper {
+  display: flex;
+}
+.section-pan:not(.last) {
+  padding-bottom: 1rem;
+}
+
+/* Big typographic section */
+.altar-section-text .altar-title-text {
+  font-size: clamp(6rem, 13vw, 14rem);
+  line-height: 1;
+  font-weight: 900;
+}
+
+/* The pan section itself; hides overflow so the text slides across */
+.altar-section {
+  overflow: hidden;
+}
+
+/* VERY IMPORTANT: wrapper must size to its content width for pan */
+.altar-section .pan-wrapper {
+  display: inline-block;
+}
+
+/* Keep the headline on a single line */
+.altar-title {
+  white-space: nowrap; /* ← prevents wrapping */
+  line-height: 0.9;
+  font-weight: 900;
+  font-size: clamp(6rem, 13vw, 14rem);
+  letter-spacing: 0.01em;
+}
+
+/* Image list */
+ul.image-row {
+  padding-left: 1rem;
+  list-style: none;
+}
+ul.image-row > li {
+  flex-shrink: 0;
+  width: clamp(500px, 60vw, 800px);
+  padding-right: 1rem;
+}
+img.demo-img {
+  width: 100%;
+  height: auto;
+  background: #f0f0f0;
+}
+
+/* Hero layout proxy (full viewport) */
+.hero-wrapper {
+  height: 100vh;
+}
+.footer-spacer {
+  height: 50vh;
+}
+
+/* FONTS  */
+.font-bebas {
+  font-family: var(--font-bebas), ui-sans-serif, system-ui, sans-serif;
+}
+.font-cherish {
+  font-family: var(--font-cherish), ui-serif, Georgia, serif;
+}
+.font-open-sans {
+  font-family: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+.marg {
+  margin-left: 4rem;
 }
