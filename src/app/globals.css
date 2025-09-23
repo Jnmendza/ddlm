@@ -151,6 +151,47 @@ img.demo-img {
   background-size: 180px 180px; /* tile size (matches the SVG width/height) */
 }
 
+/* Creative title */
+.clamp {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-bebas, "Bebas Neue"), sans-serif;
+  color: var(--fg);
+  font-size: 8em;
+  letter-spacing: 0.02em;
+  /* bright edge + glow */
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.35), 0 0 8px rgba(165, 0, 68, 0.35),
+    0 0 18px rgba(165, 0, 68, 0.35);
+  -webkit-text-stroke: 0.5px rgba(165, 0, 68, 0.55);
+}
+
+.clamp svg {
+  position: absolute;
+  width: 112%;
+  top: 50%;
+  transform: translateY(-50%) rotate(2deg);
+  left: -6%;
+  pointer-events: none;
+}
+
+.yt {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -52%) rotate(-2deg) scale(1.06);
+  z-index: 1;
+  pointer-events: none;
+  white-space: nowrap;
+  text-transform: none;
+  font-family: var(--font-cherish, "Cherish"), cursive;
+  font-size: 8em; /* slightly larger than front text */
+  color: #a50044;
+  font-weight: 100;
+  opacity: 0.9;
+  /* neon glow */
+  text-shadow: 0 0 4px var(--crimson), 0 0 10px var(--crimson),
+    0 0 22px var(--crimson), 0 2px 18px rgba(255, 42, 127, 0.6);
+}
+
 /* FONTS  */
 .font-bebas {
   font-family: var(--font-bebas), ui-sans-serif, system-ui, sans-serif;

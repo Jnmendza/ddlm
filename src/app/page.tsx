@@ -8,6 +8,8 @@ import Hero from "@/components/Hero";
 import AltarsTextSection from "@/components/AltarsTextSection";
 import GalleryPanSection from "@/components/GalleryPanSection";
 import FoodSection from "@/components/FoodSection";
+import Clamp from "@/components/Clamp";
+import PinnedFlipSlider from "@/components/PinnedFlipSlider";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -108,6 +110,22 @@ export default function Page() {
       </div>
       {/* Footer spacer (just to feel the end) */}
       <FoodSection />
+      <Clamp />
+      <PinnedFlipSlider
+        images={[
+          "/altar-ex.jpg",
+          "/skull-ex.png",
+          "/slides/art-3.jpg",
+          "/slides/art-4.jpg",
+          "/slides/art-5.jpg",
+          "/slides/art-6.jpg",
+        ]}
+        frameSrc='/golden-frame.png' // transparent center PNG/SVG
+        size={720} // inner square; match your frame opening
+        imageInsetX={52}
+        imageInsetY={142}
+        showMarkers={false}
+      />
       <footer className='df aic jcc footer-spacer'>
         <p>
           Images from <a href='https://unsplash.com/'>Unsplash</a>
