@@ -1,6 +1,12 @@
 // src/app/layout.tsx
 import "./globals.css";
-import { Bebas_Neue, Cherish, Open_Sans } from "next/font/google";
+import {
+  Bebas_Neue,
+  Cherish,
+  Open_Sans,
+  Sancreek,
+  Bona_Nova_SC,
+} from "next/font/google";
 
 const bebas = Bebas_Neue({
   subsets: ["latin"],
@@ -20,6 +26,18 @@ const openSans = Open_Sans({
   variable: "--font-openSans",
 });
 
+const sancreek = Sancreek({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-sancreek",
+});
+
+const bonaNovaSc = Bona_Nova_SC({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-bona",
+});
+
 export default function RootLayout({
   children,
 }: {
@@ -28,7 +46,7 @@ export default function RootLayout({
   return (
     <html
       lang='en'
-      className={`dark ${bebas.variable} ${cherish.variable} ${openSans.variable}`}
+      className={`dark ${bebas.variable} ${cherish.variable} ${openSans.variable} ${sancreek.variable} ${bonaNovaSc.variable}`}
     >
       <body>{children}</body>
     </html>

@@ -137,10 +137,6 @@ export default function ComparsasParades() {
             />
           </div>
         </section>
-
-        <div style={{ marginTop: 300 }}>
-          <div>;lkj;lkj;lkj;lkj;</div>
-        </div>
       </div>
 
       {/* styles (scoped) */}

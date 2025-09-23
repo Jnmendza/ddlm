@@ -20,7 +20,7 @@ type Props = {
 
 export default function PinnedFlipSlider({
   images,
-  frameSrc = "", // e.g. "/frames/gold-frame.png"
+  frameSrc = "",
   size = 600,
   imageInset = 0,
   imageInsetX,
@@ -97,8 +97,8 @@ export default function PinnedFlipSlider({
       <section ref={wrapperRef} className='pf-wrapper'>
         {/* <h2 className='pf-title'>{title}</h2> */}
         <h1>
-          <span className='clamp'>Comparsas &amp; Parades</span>
-          <span className='yt'>Comparsas Y Parades</span>
+          <span className='clamp'>Art &amp; Street Scene</span>
+          <span className='yt'>Art Y Street Scene</span>
         </h1>
 
         <div

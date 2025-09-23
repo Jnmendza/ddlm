@@ -37,9 +37,14 @@ body {
 }
 
 ::selection {
-  background: #87cd33;
+  background: #2a2d74;
   color: white;
 }
+
+a:link,
+a:visited {
+  color: #a50044;
+} /* <- makes every real link green */
 
 body {
   overflow: hidden; /* JS enables after load */
@@ -141,8 +146,6 @@ img.demo-img {
   height: 50vh;
 }
 
-/* BACKGROUND */
-
 /* globals.css */
 .bg-dia-pattern {
   background-color: #0b0b0c;
@@ -201,4 +204,10 @@ img.demo-img {
 }
 .font-open-sans {
   font-family: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
+}
+.font-sancreek {
+  font-family: var(--font-sancreek), cursive;
+}
+.font-bona {
+  font-family: var(--font-bona);
 }
