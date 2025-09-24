@@ -6,14 +6,10 @@ import imagesLoaded from "imagesloaded";
 
 import Hero from "@/components/Hero";
 import AltarsTextSection from "@/components/AltarsTextSection";
+import GalleryPanSection from "@/components/GalleryPanSection";
 import FoodSection from "@/components/FoodSection";
 import Clamp from "@/components/Clamp";
 import PinnedFlipSlider from "@/components/PinnedFlipSlider";
-import dynamic from "next/dynamic";
-const GalleryPanSection = dynamic(
-  () => import("@/components/GalleryPanSection"),
-  { ssr: false }
-);
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,100 +21,63 @@ export default function Page() {
   useEffect(() => {
     if (!wrapperRef.current) return;
 
-    // ⬇️ Capture stable references (fixes the ESLint ref warning, too)
-    const wrapperEl = wrapperRef.current;
-    const loaderEl = loaderRef.current;
-    const loaderTextEl = loaderTextRef.current;
+    // 1) Gather images (plain <img> so imagesLoaded can detect)
+    const images = Array.from(wrapperRef.current.querySelectorAll("img"));
 
-    let alive = true; // gate all async work after unmount
+    const imgLoad = imagesLoaded(images);
     let loadedCount = 0;
-
-    // 1) Collect only images inside this page's wrapper
-    const images = Array.from(
-      wrapperEl.querySelectorAll<HTMLImageElement>("img")
-    );
-    const total = images.length || 1;
-
-    // imagesLoaded instance (types vary; treat as any to use .on/.off)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const imgLoad: any = imagesLoaded(images as unknown as Element[]);
-
-    // GSAP context auto-kills tweens/triggers when we revert()
-    const ctx = gsap.context(() => {}, wrapperEl);
-
-    const onProgress = () => {
-      if (!alive || !loaderTextEl) return;
-      loadedCount += 1;
-      const prog = Math.round((loadedCount * 100) / total);
-      loaderTextEl.textContent = `${prog}%`;
+    const updateProgress = () => {
+      if (!loaderTextRef.current) return;
+      const prog = Math.round((loadedCount * 100) / (images.length || 1));
+      loaderTextRef.current.textContent = `${prog}%`;
     };
 
-    const onAlways = () => {
-      if (!alive) return;
-
-      // enable scroll, fade loader (only if node still in DOM)
+    imgLoad.on("progress", () => {
+      loadedCount += 1;
+      updateProgress();
+    });
+    imgLoad.on("always", () => {
+      // 2) Enable scroll, fade out loader
       document.body.style.overflow = "auto";
-      if (loaderEl && loaderEl.isConnected) {
-        gsap.to(loaderEl, { autoAlpha: 0, duration: 0.4, ease: "power2.out" });
+      document.scrollingElement?.scrollTo(0, 0);
+
+      if (loaderRef.current) {
+        gsap.to(loaderRef.current, {
+          autoAlpha: 0,
+          duration: 0.4,
+          ease: "power2.out",
+        });
       }
 
-      // 2) Setup horizontal pans, strictly scoped under wrapperEl
-      const sections = Array.from(
-        wrapperEl.querySelectorAll<HTMLElement>("section[data-pan]")
-      );
-
+      // 3) Apply horizontal pan to each pan section
+      const sections = gsap.utils.toArray<HTMLElement>("section[data-pan]");
       sections.forEach((section, idx) => {
-        if (!alive || !section.isConnected) return;
         const w = section.querySelector<HTMLElement>(".pan-wrapper");
-        if (!w || !w.isConnected) return;
+        if (!w) return;
 
         const [xStart, xEnd] =
           idx % 2
             ? ["100%", (w.scrollWidth - section.offsetWidth) * -1]
             : [w.scrollWidth * -1, 0];
 
-        // Create tweens inside GSAP context so cleanup is guaranteed
-        ctx.add(() => {
-          gsap.fromTo(
-            w,
-            { x: xStart },
-            {
-              x: xEnd,
-              ease: "none",
-              scrollTrigger: {
-                trigger: section,
-                scrub: 0.5,
-              },
-            }
-          );
-        });
+        gsap.fromTo(
+          w,
+          { x: xStart },
+          {
+            x: xEnd,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              scrub: 0.5,
+            },
+          }
+        );
       });
-    };
+    });
 
-    imgLoad.on("progress", onProgress);
-    imgLoad.on("always", onAlways);
-
-    // ✅ Cleanup runs BEFORE React removes nodes — prevents removeChild
+    // Cleanup on route change
     return () => {
-      alive = false;
-
-      // remove listeners safely (ok if underlying lib no-ops)
-      try {
-        imgLoad.off("progress", onProgress);
-        imgLoad.off("always", onAlways);
-      } catch {}
-
-      // kill GSAP tied to this subtree only
-      ctx.revert(); // kills ScrollTriggers/tweens created in ctx
-
-      // stop any pending loader tween and clear inline styles
-      if (loaderEl) {
-        gsap.killTweensOf(loaderEl);
-        gsap.set(loaderEl, { clearProps: "all" });
-      }
-
-      // final reset
-      document.body.style.overflow = "";
+      ScrollTrigger.getAll().forEach((st) => st.kill());
     };
   }, []);
 

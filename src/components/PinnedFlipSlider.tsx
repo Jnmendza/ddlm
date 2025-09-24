@@ -143,7 +143,6 @@ export default function PinnedFlipSlider({
           )}
         </div>
       </section>
-      <div className='pf-spacer' />
 
       <style jsx>{`
         h1 {
