@@ -1,4 +1,4 @@
-// src/app/layout.tsx
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import {
   Bebas_Neue,
@@ -7,6 +7,19 @@ import {
   Sancreek,
   Bona_Nova_SC,
 } from "next/font/google";
+
+export const metadata: Metadata = {
+  title: {
+    default: "Día de los Muertos",
+    template: "%s | Día de los Muertos",
+  },
+  description: "Photos, altars, parades, and food.",
+  metadataBase: new URL("https://your-domain.com"),
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0b0b0c",
+};
 
 const bebas = Bebas_Neue({
   subsets: ["latin"],

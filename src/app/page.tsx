@@ -6,10 +6,15 @@ import imagesLoaded from "imagesloaded";
 
 import Hero from "@/components/Hero";
 import AltarsTextSection from "@/components/AltarsTextSection";
-import GalleryPanSection from "@/components/GalleryPanSection";
 import FoodSection from "@/components/FoodSection";
 import Clamp from "@/components/Clamp";
 import PinnedFlipSlider from "@/components/PinnedFlipSlider";
+import dynamic from "next/dynamic";
+
+const GalleryPanSection = dynamic(
+  () => import("@/components/GalleryPanSection"),
+  { ssr: false } // <- client-only, no SSR HTML to mismatch
+);
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -102,7 +107,6 @@ export default function Page() {
         <section className='altar-section bg-crimson' data-pan>
           <AltarsTextSection />
         </section>
-
         {/* GALLERIES (you can add as many as you like) */}
         <GalleryPanSection count={3} />
         <GalleryPanSection count={4} />

@@ -94,7 +94,7 @@ export default function PinnedFlipSlider({
   return (
     <>
       <div className='pf-spacer' />
-      <section ref={wrapperRef} className='pf-wrapper'>
+      <section ref={wrapperRef} className='pf-wrapper bg-dia-pattern'>
         {/* <h2 className='pf-title'>{title}</h2> */}
         <h1>
           <span className='clamp'>Art &amp; Street Scene</span>
