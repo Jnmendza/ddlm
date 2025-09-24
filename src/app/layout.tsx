@@ -48,7 +48,11 @@ export default function RootLayout({
       lang='en'
       className={`dark ${bebas.variable} ${cherish.variable} ${openSans.variable} ${sancreek.variable} ${bonaNovaSc.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <div id='lightbox-root' />
+        <div id='loader-root' />
+      </body>
     </html>
   );
 }

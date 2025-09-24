@@ -2,7 +2,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 
 export default function LandingHero() {
   return (
@@ -29,8 +28,8 @@ export default function LandingHero() {
         {/* NAV — pin top-right, above overlay */}
         <div
           className='
-            absolute top-10 right-8 z-[100]   /* CHANGED: z-100 -> z-[100] */
-            pointer-events-auto               /* CHANGED: ensure clickable/selectable */
+            absolute top-10 right-8 z-[100]
+            pointer-events-auto
             flex items-center gap-3 text-xs tracking-widest text-crimson
           '
         >
@@ -42,10 +41,9 @@ export default function LandingHero() {
             ESP
           </a>
           <span className='mx-2' />
-          <Link href='/gallery' className='no-underline cursor-pointer'>
-            {/* wrap to avoid global a:link/visited overrides */}
+          <a href='/gallery' className='no-underline cursor-pointer'>
             <span className='text-marigold hover:opacity-90'>GALLERY</span>
-          </Link>
+          </a>
         </div>
 
         {/* Doily image + centered text */}
@@ -128,10 +126,14 @@ export default function LandingHero() {
           ever since the 1500s.
         </p>
 
-        {/* Scroll at (81,656) */}
         <div className='absolute left-[81px] top-[656px] flex items-center gap-3 text-xs uppercase tracking-widest text-marigold'>
-          <span className='inline-block h-5 w-[2px] bg-marigold' />
-          Scroll
+          <span
+            aria-hidden
+            className='inline-block text-2xl leading-none motion-safe:animate-bounce translate-y-px'
+          >
+            ↓
+          </span>
+          <span>Scroll</span>
         </div>
       </div>
 
