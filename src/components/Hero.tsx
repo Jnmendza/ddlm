@@ -49,7 +49,7 @@ export default function LandingHero() {
         {/* Doily image + centered text */}
         <div className='absolute bottom-[155px] -right-20 h-80 w-80 pointer-events-none'>
           <Image
-            src='/ylw-pattern.png'
+            src='https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/object/public/images/landing/ylw-pattern.png'
             alt=''
             fill
             priority
