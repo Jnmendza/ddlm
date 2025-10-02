@@ -3,79 +3,27 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState, useEffect, useCallback } from "react";
+import type { ApiTag } from "@/types/api";
+import { useImages } from "@/hooks/useImages";
+import { useTags } from "@/hooks/useTags";
 
-type GalleryCategory = "all" | "food" | "art" | "parades";
-type GalleryImage = {
-  id: string;
-  src: string;
-  alt: string;
-  category: Exclude<GalleryCategory, "all">;
-};
-
-const CATEGORIES: Array<GalleryCategory> = ["all", "food", "art", "parades"];
-
-const IMAGES: Array<GalleryImage> = [
-  {
-    id: "1",
-    src: "https://images.unsplash.com/photo-1514511542413-f0f2d52f0c54?q=80&w=1600",
-    alt: "Street tacos",
-    category: "food",
-  },
-  {
-    id: "2",
-    src: "https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=1600",
-    alt: "Ceviche plate",
-    category: "food",
-  },
-  {
-    id: "3",
-    src: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600",
-    alt: "Gallery piece",
-    category: "art",
-  },
-  {
-    id: "4",
-    src: "https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1600",
-    alt: "Abstract mural",
-    category: "art",
-  },
-  {
-    id: "5",
-    src: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1600",
-    alt: "Parade dancers",
-    category: "parades",
-  },
-  {
-    id: "6",
-    src: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1600",
-    alt: "Parade drums",
-    category: "parades",
-  },
-  {
-    id: "7",
-    src: "https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=1600",
-    alt: "Churros",
-    category: "food",
-  },
-  {
-    id: "8",
-    src: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600",
-    alt: "Sculpture",
-    category: "art",
-  },
-];
+type CategorySlug = "all" | ApiTag["slug"];
 
 export default function PhotoGallery() {
-  const [activeCategory, setActiveCategory] = useState<GalleryCategory>("all");
+  const [activeCategory, setActiveCategory] = useState<CategorySlug>("all");
+  const { tags, isLoading: tagsLoading } = useTags();
+  const { images, isLoading: imagesLoading } = useImages({
+    slugs: activeCategory !== "all" ? [activeCategory] : [],
+  });
+
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  const visibleImages = useMemo(() => {
-    return activeCategory === "all"
-      ? IMAGES
-      : IMAGES.filter((img) => img.category === activeCategory);
-  }, [activeCategory]);
+  // Visible images come directly from API (already filtered)
+  const visibleImages = useMemo(() => images, [images]);
+  const isLoading = tagsLoading || imagesLoading;
 
+  // Cleanup body scroll lock on unmount
   useEffect(
     () => () => {
       document.body.style.overflow = "";
@@ -106,17 +54,6 @@ export default function PhotoGallery() {
     setLightboxIndex((prev) => ((prev ?? 0) + 1) % visibleImages.length);
   }, [lightboxIndex, visibleImages.length]);
 
-  useEffect(() => {
-    if (!lightboxOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeLightbox();
-      if (e.key === "ArrowLeft") goPrev();
-      if (e.key === "ArrowRight") goNext();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [lightboxOpen, goPrev, goNext]);
-
   return (
     <main className='min-h-screen bg-neutral-950 text-neutral-100'>
       <div className='mx-auto px-6'>
@@ -133,13 +70,32 @@ export default function PhotoGallery() {
               }}
             >
               <nav className='flex flex-col gap-4 font-bebas'>
-                {CATEGORIES.map((cat) => {
-                  const isActive = activeCategory === cat;
+                {/* "All" */}
+                <button
+                  onClick={() => {
+                    setActiveCategory("all");
+                    setLightboxIndex(null);
+                  }}
+                  className={[
+                    "text-left text-xl capitalize tracking-wide transition font-semibold cursor-pointer",
+                    activeCategory === "all"
+                      ? "text-crimson"
+                      : "text-neutral-300 hover:text-neutral-50",
+                  ].join(" ")}
+                  aria-pressed={activeCategory === "all"}
+                  aria-label='Filter by all'
+                >
+                  all
+                </button>
+
+                {/* Tags from Supabase */}
+                {tags.map((tag) => {
+                  const isActive = activeCategory === tag.slug;
                   return (
                     <button
-                      key={cat}
+                      key={tag.id}
                       onClick={() => {
-                        setActiveCategory(cat);
+                        setActiveCategory(tag.slug);
                         setLightboxIndex(null);
                       }}
                       className={[
@@ -149,9 +105,9 @@ export default function PhotoGallery() {
                           : "text-neutral-300 hover:text-neutral-50",
                       ].join(" ")}
                       aria-pressed={isActive}
-                      aria-label={`Filter by ${cat}`}
+                      aria-label={`Filter by ${tag.label}`}
                     >
-                      {cat}
+                      {tag.label.toLowerCase()}
                     </button>
                   );
                 })}
@@ -179,79 +135,86 @@ export default function PhotoGallery() {
               className='grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4'
               style={{ padding: 20 }}
             >
-              {visibleImages.map((img, idx) => (
-                <button
-                  key={img.id}
-                  onClick={() => openLightbox(idx)}
-                  className='group relative overflow-hidden cursor-pointer ring-1 ring-neutral-800 focus:outline-none focus:ring-2 focus:ring-crimson'
-                  aria-label={`Open ${img.alt}`}
-                >
-                  <div className='relative h-40 w-full sm:h-48 lg:h-52'>
-                    <Image
-                      src={img.src}
-                      alt={img.alt}
-                      fill
-                      sizes='(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw'
-                      className='object-cover transition-transform duration-300 group-hover:scale-105'
-                      priority={idx < 8}
-                      unoptimized
+              {isLoading
+                ? Array.from({ length: 8 }).map((_, i) => (
+                    <div
+                      key={`skeleton-${i}`}
+                      className='relative h-40 w-full sm:h-48 lg:h-52 rounded bg-neutral-800/60 animate-pulse'
                     />
-                  </div>
-                </button>
-              ))}
+                  ))
+                : visibleImages.map((img, idx) => (
+                    <button
+                      key={img.id}
+                      onClick={() => openLightbox(idx)}
+                      className='group relative overflow-hidden cursor-pointer ring-1 ring-neutral-800 focus:outline-none focus:ring-2 focus:ring-crimson'
+                      aria-label={`Open ${img.alt}`}
+                    >
+                      <div className='relative h-40 w-full sm:h-48 lg:h-52'>
+                        <Image
+                          src={img.url}
+                          alt={img.alt}
+                          fill
+                          sizes='(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw'
+                          className='object-cover transition-transform duration-300 group-hover:scale-105'
+                          priority={idx < 8}
+                        />
+                      </div>
+                    </button>
+                  ))}
             </div>
           </section>
         </div>
       </div>
 
-      {lightboxOpen && lightboxIndex !== null && (
-        <div
-          role='dialog'
-          aria-modal='true'
-          className='fixed inset-0 z-50 bg-black/90'
-        >
-          <button
-            aria-label='Close'
-            onClick={closeLightbox}
-            className='absolute right-4 top-4 h-10 w-10 rounded-full bg-neutral-900/70 px-3 py-2 text-sm ring-1 ring-neutral-700 hover:bg-neutral-800 cursor-pointer'
-          >
-            X
-          </button>
-          <button
-            aria-label='Previous image'
-            onClick={goPrev}
-            className='absolute left-6 top-1/2 -translate-y-1/2 rounded-full bg-neutral-900/60 px-3 py-2 text-lg ring-1 ring-neutral-700 hover:bg-neutral-800 w-10 h-10 cursor-pointer'
-          >
-            ‹
-          </button>
-          <button
-            aria-label='Next image'
-            onClick={goNext}
-            className='absolute right-6 top-1/2 -translate-y-1/2 rounded-full bg-neutral-900/60 px-3 py-2 text-lg ring-1 ring-neutral-700 hover:bg-neutral-800 w-10 h-10 cursor-pointer'
-          >
-            ›
-          </button>
+      {lightboxOpen &&
+        lightboxIndex !== null &&
+        visibleImages[lightboxIndex] && (
           <div
-            className='flex h-full w-full items-center justify-center p-6'
-            onClick={closeLightbox}
+            role='dialog'
+            aria-modal='true'
+            className='fixed inset-0 z-50 bg-black/90'
           >
-            <div
-              className='relative h-[80vh] w-[92vw] max-w-6xl'
-              onClick={(e) => e.stopPropagation()}
+            <button
+              aria-label='Close'
+              onClick={closeLightbox}
+              className='absolute right-4 top-4 h-10 w-10 rounded-full bg-neutral-900/70 px-3 py-2 text-sm ring-1 ring-neutral-700 hover:bg-neutral-800 cursor-pointer'
             >
-              <Image
-                src={visibleImages[lightboxIndex].src}
-                alt={visibleImages[lightboxIndex].alt}
-                fill
-                sizes='92vw'
-                className='object-contain'
-                unoptimized
-                priority
-              />
+              X
+            </button>
+            <button
+              aria-label='Previous image'
+              onClick={goPrev}
+              className='absolute left-6 top-1/2 -translate-y-1/2 rounded-full bg-neutral-900/60 px-3 py-2 text-lg ring-1 ring-neutral-700 hover:bg-neutral-800 w-10 h-10 cursor-pointer'
+            >
+              ‹
+            </button>
+            <button
+              aria-label='Next image'
+              onClick={goNext}
+              className='absolute right-6 top-1/2 -translate-y-1/2 rounded-full bg-neutral-900/60 px-3 py-2 text-lg ring-1 ring-neutral-700 hover:bg-neutral-800 w-10 h-10 cursor-pointer'
+            >
+              ›
+            </button>
+            <div
+              className='flex h-full w-full items-center justify-center p-6'
+              onClick={closeLightbox}
+            >
+              <div
+                className='relative h-[80vh] w-[92vw] max-w-6xl'
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Image
+                  src={visibleImages[lightboxIndex].url}
+                  alt={visibleImages[lightboxIndex].alt}
+                  fill
+                  sizes='92vw'
+                  className='object-contain'
+                  priority
+                />
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
     </main>
   );
 }
