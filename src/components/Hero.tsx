@@ -1,7 +1,8 @@
 // app/(landing)/sections/LandingHero.tsx
 "use client";
-
 import Image from "next/image";
+import BackgroundVideo from "next-video/background-video";
+import heroVideo from "../../videos/hero_muertos.mp4";
 
 export default function LandingHero() {
   return (
@@ -12,17 +13,9 @@ export default function LandingHero() {
       '
     >
       {/* MIDDLE THIRD — full-height image */}
-      <div className='relative z-10 col-start-2 col-end-3 h-full'>
-        <Image
-          src='/fire.jpg'
-          alt='altar'
-          fill
-          unoptimized
-          priority
-          className='object-cover'
-        />
+      <div className='relative z-10 col-start-2 col-end-3 h-full overflow-hidden video-cover-middle'>
+        <BackgroundVideo src={heroVideo} />
       </div>
-
       {/* RIGHT THIRD — nav + badge */}
       <aside className='relative z-10 col-start-3 col-end-4 h-full px-8 py-8'>
         {/* NAV — pin top-right, above overlay */}
@@ -47,7 +40,7 @@ export default function LandingHero() {
         </div>
 
         {/* Doily image + centered text */}
-        <div className='absolute bottom-[155px] -right-20 h-80 w-80 pointer-events-none'>
+        <div className='absolute bottom-[180px] -right-20 h-80 w-80 pointer-events-none'>
           <Image
             src='https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/object/public/images/landing/ylw-pattern.png'
             alt=''
@@ -71,7 +64,6 @@ export default function LandingHero() {
           <Image src='/indigo-flower.png' alt='' width={120} height={120} />
         </div>
       </aside>
-
       {/* LEFT/MID OVERLAY — exact figma coords */}
       <div
         className='
@@ -84,7 +76,7 @@ export default function LandingHero() {
         </div>
 
         {/* H1 at (81,223), stops before col 3 */}
-        <div className='absolute left-[81px] top-[223px] right-[33.333%]'>
+        <div className='absolute left-[81px] top-[123px] right-[33.333%]'>
           <div className='relative inline-block font-sancreek'>
             {/* BACK COPY (solid shadow) */}
             <h1
@@ -110,20 +102,22 @@ export default function LandingHero() {
         </div>
 
         {/* Tagline at (81,340) */}
-        <p className='absolute left-[81px] top-[340px] text-[36px] italic font-cherish text-amber-400/90'>
-          Something Catchy
+        <p className='absolute left-[81px] top-[200px] text-[42px] font-cherish text-amber-400/90'>
+          Oaxaca Through My Lens
         </p>
 
         {/* Subhead at (88,500) */}
-        <h3 className='absolute left-[88px] top-[500px] text-sm font-bold uppercase tracking-widest text-crimson'>
-          Some title goes here
+        <h3 className='absolute left-[88px] top-[460px] max-w-[360px] text-sm font-bold uppercase tracking-widest text-crimson'>
+          A visual journey into the heart of Día de los Muertos 2023 💀 — where
+          tradition, <span className='text-marigold'>color,</span> and memory
+          collide
         </h3>
 
         {/* Body at (88,550) */}
         <p className='absolute left-[88px] top-[550px] max-w-[360px] text-sm leading-6 text-neutral-300'>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry&apos;s standard dummy text
-          ever since the 1500s.
+          Captured on the streets of Oaxaca, these photos celebrate life, honor
+          the departed, and showcase one of Mexico’s most vibrant cultural
+          traditions.
         </p>
 
         <div className='absolute left-[81px] top-[656px] flex items-center gap-3 text-xs uppercase tracking-widest text-marigold'>
@@ -136,7 +130,6 @@ export default function LandingHero() {
           <span>Scroll</span>
         </div>
       </div>
-
       {/* FULL-WIDTH DOTTED BASELINE — responsive, behind the thirds */}
       <div className='pointer-events-none absolute inset-x-0 bottom-8 z-0 h-0 border-b-4 border-dotted border-crimson' />
     </section>
