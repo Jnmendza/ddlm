@@ -13,10 +13,9 @@ export default function LandingHero() {
       '
     >
       {/* MIDDLE THIRD — full-height image */}
-      <div className='relative z-10 col-start-2 col-end-3 h-full'>
+      <div className='relative z-10 col-start-2 col-end-3 h-full overflow-hidden video-cover-middle'>
         <BackgroundVideo src={heroVideo} />
       </div>
-
       {/* RIGHT THIRD — nav + badge */}
       <aside className='relative z-10 col-start-3 col-end-4 h-full px-8 py-8'>
         {/* NAV — pin top-right, above overlay */}
@@ -41,7 +40,7 @@ export default function LandingHero() {
         </div>
 
         {/* Doily image + centered text */}
-        <div className='absolute bottom-[250px] -right-20 h-80 w-80 pointer-events-none'>
+        <div className='absolute bottom-[180px] -right-20 h-80 w-80 pointer-events-none'>
           <Image
             src='https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/object/public/images/landing/ylw-pattern.png'
             alt=''
@@ -58,14 +57,13 @@ export default function LandingHero() {
           </div>
         </div>
 
-        <div className='absolute bottom-10 -right-5'>
+        <div className='absolute -bottom-5 -right-5'>
           <Image src='/crim-flower.png' alt='' width={120} height={120} />
         </div>
-        <div className='absolute bottom-10 -left-5'>
+        <div className='absolute -bottom-5 -left-5'>
           <Image src='/indigo-flower.png' alt='' width={120} height={120} />
         </div>
       </aside>
-
       {/* LEFT/MID OVERLAY — exact figma coords */}
       <div
         className='
@@ -132,7 +130,6 @@ export default function LandingHero() {
           <span>Scroll</span>
         </div>
       </div>
-
       {/* FULL-WIDTH DOTTED BASELINE — responsive, behind the thirds */}
       <div className='pointer-events-none absolute inset-x-0 bottom-8 z-0 h-0 border-b-4 border-dotted border-crimson' />
     </section>

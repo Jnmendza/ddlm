@@ -119,7 +119,7 @@ export default function PhotoGallery() {
 
   return (
     <main className='min-h-screen bg-neutral-950 text-neutral-100'>
-      <div className='mx-auto max-w-7xl px-6'>
+      <div className='mx-auto px-6'>
         <div className='flex min-h-screen'>
           <aside className='w-44 shrink-0 border-r border-crimson'>
             <div

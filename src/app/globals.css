@@ -195,6 +195,58 @@ img.demo-img {
     0 0 22px var(--crimson), 0 2px 18px rgba(255, 42, 127, 0.6);
 }
 
+/*  Video */
+/* Fill & clip the middle third */
+.video-cover-middle {
+  position: relative;
+  overflow: hidden;
+}
+
+/* 1) KILL the forced 16:9 and centering */
+.video-cover-middle .next-video-container {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: auto !important; /* <- the key fix */
+  display: block !important; /* remove grid */
+}
+
+.video-cover-middle .next-video-bg {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important; /* remove grid + centering */
+}
+
+/* 2) Make mux-video fill & crop */
+.video-cover-middle mux-video.next-video-bg-video {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  pointer-events: none !important;
+}
+
+/* 3) Ensure the internal <video> also covers (Mux exposes parts) */
+.video-cover-middle mux-video::part(media),
+.video-cover-middle mux-video::part(video) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Poster should cover before playback */
+.video-cover-middle .next-video-bg .next-video-bg-poster {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
 /* FONTS  */
 .font-bebas {
   font-family: var(--font-bebas), ui-sans-serif, system-ui, sans-serif;
