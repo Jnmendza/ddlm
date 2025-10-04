@@ -1,12 +1,21 @@
-import { createServerClient } from "@supabase/ssr";
+// lib/supabase.ts
+import { createBrowserClient, createServerClient } from "@supabase/ssr";
+import type { Database } from "@/types/database";
 import { cookies } from "next/headers";
 
-export async function createClient() {
+export const sbBrowser = () =>
+  createBrowserClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
+// Server-only (for admin writes) – DO NOT expose the service key to the client
+export async function sbServer() {
   const cookieStore = await cookies();
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import BackgroundVideo from "next-video/background-video";
 import heroVideo from "../../videos/hero_muertos.mp4";
+import { LANDING_IMAGES_URL } from "@/lib/data/constants";
 
 export default function LandingHero() {
   return (
@@ -42,7 +43,7 @@ export default function LandingHero() {
         {/* Doily image + centered text */}
         <div className='absolute bottom-[180px] -right-20 h-80 w-80 pointer-events-none'>
           <Image
-            src='https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/object/public/images/landing/ylw-pattern.png'
+            src={`${LANDING_IMAGES_URL}ylw-pattern.png`}
             alt=''
             fill
             priority
@@ -58,10 +59,20 @@ export default function LandingHero() {
         </div>
 
         <div className='absolute -bottom-5 -right-5'>
-          <Image src='/crim-flower.png' alt='' width={120} height={120} />
+          <Image
+            src={`${LANDING_IMAGES_URL}crim-flower.png`}
+            alt=''
+            width={120}
+            height={120}
+          />
         </div>
         <div className='absolute -bottom-5 -left-5'>
-          <Image src='/indigo-flower.png' alt='' width={120} height={120} />
+          <Image
+            src={`${LANDING_IMAGES_URL}indigo-flower.png`}
+            alt=''
+            width={120}
+            height={120}
+          />
         </div>
       </aside>
       {/* LEFT/MID OVERLAY — exact figma coords */}
@@ -72,7 +83,12 @@ export default function LandingHero() {
       >
         {/* top flourish */}
         <div className='absolute -top-3 -left-1 select-none'>
-          <Image src='/2flowers.png' alt='' width={140} height={140} />
+          <Image
+            src={`${LANDING_IMAGES_URL}2flowers.png`}
+            alt=''
+            width={140}
+            height={140}
+          />
         </div>
 
         {/* H1 at (81,223), stops before col 3 */}
