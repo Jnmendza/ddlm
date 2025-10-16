@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "nargtjqnjvwljfhrzvmk.supabase.co",
+        pathname: "/storage/v1/object/public/**",
       },
     ],
   },

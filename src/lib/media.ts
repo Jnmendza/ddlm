@@ -10,3 +10,6 @@ export function publicUrl(bucket: string, path: string) {
   const { data } = supabase.storage.from(bucket).getPublicUrl(path);
   return data.publicUrl;
 }
+
+export const publicImageUrl = (path: string) =>
+  `${process.env.NEXT_PUBCLIC_SUPABASE_URL}/storage/v1/object/public/${path}`;

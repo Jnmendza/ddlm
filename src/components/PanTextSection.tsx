@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function AltarsTextSection() {
+export default function PanTextSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const textRef = useRef<HTMLHeadingElement | null>(null);
 
@@ -44,7 +44,10 @@ export default function AltarsTextSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className='relative overflow-x-hidden'>
+    <section
+      ref={sectionRef}
+      className='relative overflow-x-hidden bg-dia-pattern-2'
+    >
       {/* The section is a normal block in page flow; overflow-x-hidden hides horizontal scroll */}
       <h1
         ref={textRef}
@@ -57,7 +60,7 @@ export default function AltarsTextSection() {
           •
         </span>
         <span className='inline-block mx-[0.4em] font-cherish text-[clamp(6rem, 13vw, 12rem)] text-marigold font-light '>
-          Alatars y Ofrendas
+          Comparsas Y Parades
         </span>
         <span
           style={{ marginLeft: "3rem", marginRight: "3rem", fontSize: "4rem" }}

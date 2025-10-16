@@ -5,6 +5,7 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import ThreeDRing from "./ThreeDRing";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -46,12 +47,12 @@ export default function PanDeMuertoSection() {
   return (
     <section
       ref={sectionRef}
-      className='bg-dia-pattern relative min-h-[90vh] bg-[--color-ink] overflow-hidden'
+      className='bg-dia-pattern relative min-h-[90vh] bg-[--color-ink] overflow-hidden mb-40 md:pb-56'
     >
       {/* Papel picado — final resting positions; we animate the wrappers */}
       <div
         ref={imgAWrapRef}
-        className='absolute -top-8 left-0 w-[70vw] max-w-[900px] aspect-[16/5] [will-change:transform]'
+        className='relative -top-10 left-0 z-30 w-[70vw] max-w-[900px] aspect-[16/5] [will-change:transform]'
       >
         <Image
           src='/picudo-1.png'
@@ -66,7 +67,7 @@ export default function PanDeMuertoSection() {
 
       <div
         ref={imgBWrapRef}
-        className='absolute -top-10 right-0 w-[72vw] max-w-[980px] aspect-[16/5] [will-change:transform]'
+        className='absolute -top-10 right-0 z-30 w-[72vw] max-w-[980px] aspect-[16/5] [will-change:transform]'
       >
         <Image
           src='/picudo-2.png'
@@ -79,14 +80,44 @@ export default function PanDeMuertoSection() {
         />
       </div>
 
+      <h1>
+        <span className='clamp'>Art &amp; Street Scene</span>
+        <span className='yt'>Art Y Street Scene</span>
+      </h1>
+
       {/* Heading block */}
-      <div className='relative z-10 max-w-5xl px-6 pt-40'>
-        <h2 className='font-bebas text-5xl md:text-7xl text-white'>PAN DE</h2>
-        <h2 className='font-bebas text-5xl md:text-7xl text-white'>
-          MUERTO &amp;
-        </h2>
-        <h2 className='font-bebas text-5xl md:text-7xl text-white'>FOOD</h2>
+      <div className='relative z-10 w-full'>
+        <div className='w-full flex justify-center'>
+          <ThreeDRing
+            width={620}
+            height={540}
+            images={[
+              "https://picsum.photos/id/32/600/400",
+              "https://picsum.photos/id/33/600/400",
+              "https://picsum.photos/id/34/600/400",
+              "https://picsum.photos/id/35/600/400",
+              "https://picsum.photos/id/36/600/400",
+              "https://picsum.photos/id/37/600/400",
+              "https://picsum.photos/id/38/600/400",
+              "https://picsum.photos/id/39/600/400",
+              "https://picsum.photos/id/40/600/400",
+              "https://picsum.photos/id/41/600/400",
+            ]}
+          />
+        </div>
       </div>
+      <div aria-hidden className='h-24 md:h-40' />
+      <style jsx>
+        {`
+          h1 {
+            position: relative;
+            font-size: var(--step-5);
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 1.05;
+          }
+        `}
+      </style>
     </section>
   );
 }

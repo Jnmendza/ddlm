@@ -154,6 +154,21 @@ img.demo-img {
   background-size: 180px 180px; /* tile size (matches the SVG width/height) */
 }
 
+.bg-dia-pattern-2 {
+  background-color: #a50044;
+  /* background-image: url("https://www.transparenttextures.com/patterns/flowers.png"); */
+  background-image: url("https://www.transparenttextures.com/patterns/arabesque.png");
+  background-repeat: repeat;
+  background-size: 180px 180px; /* tile size (matches the SVG width/height) */
+}
+
+.bg-dia-pattern-black {
+  background-color: #0b0b0c;
+  background-image: url("https://www.transparenttextures.com/patterns/arabesque.png");
+  background-repeat: repeat;
+  background-size: 180px 180px; /* tile size (matches the SVG width/height) */
+}
+
 /* Creative title */
 .clamp {
   position: relative;
