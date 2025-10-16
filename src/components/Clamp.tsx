@@ -8,6 +8,25 @@ import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const images = [
+  {
+    url: "https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/render/image/public/images/gallery/Altars/Altars1.jpg",
+    dataSpeed: "clamp(2.4)",
+  },
+  {
+    url: "https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/render/image/public/images/gallery/Altars/Altars2.jpg",
+    dataSpeed: "clamp(1.8)",
+  },
+  {
+    url: "https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/render/image/public/images/gallery/Altars/Altars3.jpg",
+    dataSpeed: "clamp(2.2)",
+  },
+  {
+    url: "https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/render/image/public/images/gallery/Altars/Altars4.jpg",
+    dataSpeed: "clamp(1.5)",
+  },
+];
+
 export default function ComparsasParades() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -90,51 +109,30 @@ export default function ComparsasParades() {
   }, []);
 
   return (
-    <div id='smooth-wrapper' ref={wrapperRef}>
+    <div id='smooth-wrapper' className='bg-dia-pattern-black' ref={wrapperRef}>
       <div id='smooth-content' ref={contentRef}>
-        <section className='hero pad-l'>
+        <section className='hero pad-l bg-dia-pattern-black'>
           <div className='heading'>
             <div className='pin'>
               <h1>
-                <span className='clamp '>Comparsas &amp; Parades</span>
-                <span className='yt'>Comparsas Y Parades</span>
+                <span className='clamp '>Altars &amp; Ofrendas</span>
+                <span className='yt'>Altars Y Ofrendas</span>
               </h1>
             </div>
           </div>
 
           <div className='images'>
-            <Image
-              data-speed='clamp(2.4)'
-              src='https://images.unsplash.com/photo-1530569673472-307dc017a82d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2ODM2NTUwMDA&ixlib=rb-4.0.3&q=80&w=400'
-              alt=''
-              width={400}
-              height={600}
-              unoptimized
-            />
-            <Image
-              data-speed='clamp(1.8)'
-              src='https://images.unsplash.com/photo-1439853949127-fa647821eba0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2ODM2NTQ5Njk&ixlib=rb-4.0.3&q=80&w=400'
-              alt=''
-              width={400}
-              height={600}
-              unoptimized
-            />
-            <Image
-              data-speed='clamp(2.2)'
-              src='https://images.unsplash.com/photo-1551376347-075b0121a65b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2ODM2NTQ5MTE&ixlib=rb-4.0.3&q=80&w=400'
-              alt=''
-              width={400}
-              height={600}
-              unoptimized
-            />
-            <Image
-              data-speed='clamp(1.5)'
-              src='https://images.unsplash.com/photo-1500817487388-039e623edc21?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2ODM2NTQ5MTE&ixlib=rb-4.0.3&q=80&w=400'
-              alt=''
-              width={400}
-              height={600}
-              unoptimized
-            />
+            {images.map((image, idx) => (
+              <Image
+                key={idx}
+                data-speed={image.dataSpeed}
+                src={image.url}
+                alt={`image-of-altar${idx + 1}`}
+                width={400}
+                height={600}
+                unoptimized
+              />
+            ))}
           </div>
         </section>
       </div>

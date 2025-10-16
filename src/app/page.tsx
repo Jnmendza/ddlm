@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import imagesLoaded from "imagesloaded";
 
 import Hero from "@/components/Hero";
-import AltarsTextSection from "@/components/AltarsTextSection";
+import AltarsTextSection from "@/components/PanTextSection";
 import FoodSection from "@/components/FoodSection";
 import Clamp from "@/components/Clamp";
 import PinnedFlipSlider from "@/components/PinnedFlipSlider";
@@ -108,11 +108,10 @@ export default function Page() {
           <AltarsTextSection />
         </section>
         {/* GALLERIES (you can add as many as you like) */}
-        <GalleryPanSection count={3} />
-        <GalleryPanSection count={4} />
-        <GalleryPanSection count={3} />
+        <GalleryPanSection start={1} end={3} cardHeight={480} aspect={9 / 16} />
+        <GalleryPanSection start={4} end={6} cardHeight={480} aspect={9 / 16} />
+        <GalleryPanSection start={7} end={9} cardHeight={480} aspect={9 / 16} />
       </div>
-      {/* Footer spacer (just to feel the end) */}
       <FoodSection />
       <Clamp />
       <PinnedFlipSlider
@@ -132,7 +131,7 @@ export default function Page() {
       />
       <footer className='df aic jcc footer-spacer'>
         <p>
-          Images from <a href='https://unsplash.com/'>Unsplash</a>
+          Visit the <a href='/gallery'>Gallery</a>
         </p>
       </footer>
     </>

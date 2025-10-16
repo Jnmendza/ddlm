@@ -1,5 +1,9 @@
 import PhotoGallery from "@/components/gallery/PhotoGallery";
 
 export default function GalleryPage() {
-  return <PhotoGallery />;
+  return (
+    <div>
+      <PhotoGallery />
+    </div>
+  );
 }
