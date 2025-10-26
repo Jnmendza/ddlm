@@ -1,9 +1,7 @@
-import PhotoGallery from "@/components/gallery/PhotoGallery";
+import { redirect } from "next/navigation";
 
-export default function GalleryPage() {
-  return (
-    <div>
-      <PhotoGallery />
-    </div>
-  );
+import { defaultLocale } from "@/i18n/locales";
+
+export default function GalleryRootRedirect() {
+  redirect(`/${defaultLocale}/gallery`);
 }

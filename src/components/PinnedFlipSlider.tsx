@@ -3,6 +3,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -29,9 +30,13 @@ export default function PinnedFlipSlider({
 }: Props) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("Sections");
 
   useEffect(() => {
     if (!sliderRef.current) return;
+
+    let timeline: gsap.core.Timeline | null = null;
+    let trigger: ScrollTrigger | undefined;
 
     const ctx = gsap.context(() => {
       const slides = gsap.utils.toArray<HTMLElement>(".pf-slide");
@@ -58,6 +63,9 @@ export default function PinnedFlipSlider({
         },
       });
 
+      timeline = tl;
+      trigger = tl.scrollTrigger ?? undefined;
+
       slides.forEach((slide, i) => {
         const next = slides[i + 1];
         if (!next) return;
@@ -81,24 +89,26 @@ export default function PinnedFlipSlider({
 
       // keep last slide visible briefly to smooth the end
       tl.to({}, { duration: delay });
-
-      return () => {
-        tl.kill();
-        ScrollTrigger.getAll().forEach((t) => t.kill());
-      };
     }, sliderRef);
 
-    return () => ctx.revert();
+    return () => {
+      try {
+        trigger?.kill(true);
+      } catch {
+        /* ignore */
+      }
+      timeline?.kill();
+      ctx.revert();
+    };
   }, [showMarkers]);
 
   return (
     <>
       <div className='pf-spacer' />
       <section ref={wrapperRef} className='pf-wrapper bg-dia-pattern'>
-        {/* <h2 className='pf-title'>{title}</h2> */}
         <h1>
-          <span className='clamp'>Art &amp; Street Scene</span>
-          <span className='yt'>Art Y Street Scene</span>
+          <span className='clamp'>{t("artPrimary")}</span>
+          <span className='yt'>{t("artSecondary")}</span>
         </h1>
 
         <div

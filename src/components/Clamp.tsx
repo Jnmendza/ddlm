@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "@studio-freight/lenis";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -31,9 +32,11 @@ export default function ComparsasParades() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("Sections");
 
   useEffect(() => {
     // ---- Lenis smooth scroll ----
+    let rafId: number;
     const lenis = new Lenis({
       duration: 1.2,
       smoothWheel: true,
@@ -42,9 +45,9 @@ export default function ComparsasParades() {
     const raf = (time: number) => {
       lenis.raf(time);
       ScrollTrigger.update();
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     };
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     // keep ScrollTrigger in sync with Lenis
     lenis.on("scroll", ScrollTrigger.update);
@@ -104,6 +107,8 @@ export default function ComparsasParades() {
 
     return () => {
       ctx.revert();
+      cancelAnimationFrame(rafId);
+      lenis.off("scroll", ScrollTrigger.update);
       lenis.destroy();
     };
   }, []);
@@ -115,8 +120,8 @@ export default function ComparsasParades() {
           <div className='heading'>
             <div className='pin'>
               <h1>
-                <span className='clamp '>Altars &amp; Ofrendas</span>
-                <span className='yt'>Altars Y Ofrendas</span>
+                <span className='clamp '>{t("altarsPrimary")}</span>
+                <span className='yt'>{t("altarsSecondary")}</span>
               </h1>
             </div>
           </div>

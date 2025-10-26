@@ -5,7 +5,7 @@ import { useLayoutEffect, useMemo, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import { GALLERY_ALTARS } from "@/lib/data/constants";
+import { GALLERY_STREETART } from "@/lib/data/constants";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,6 +18,14 @@ type Props = {
   cardHeight?: number; // e.g., 420
   /** Portrait ratio as width/height. 0.75 = 3:4, 0.8 = 4:5, 0.5625 = 9:16 */
   aspect?: number; // default 3/4
+  /**
+   * Resize mode for Supabase image transformer.
+   * - cover: crop to fill frame
+   * - contain/inside: keep whole image visible
+   */
+  resizeMode?: "cover" | "contain" | "fill" | "inside" | "outside";
+  /** Allow the frame width to grow with the intrinsic image ratio */
+  variableWidth?: boolean;
 };
 
 const toRenderBase = (base: string) =>
@@ -30,6 +38,8 @@ export default function GalleryPanSection({
   direction = "ltr",
   cardHeight = 420, // tall but not extreme
   aspect = 3 / 4, // 3:4 portrait (less aggressive than 9:16)
+  resizeMode = "inside",
+  variableWidth = false,
 }: Props) {
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -50,10 +60,25 @@ export default function GalleryPanSection({
   const REQ_H = BOX_H * 2;
   const QUALITY = 72;
 
-  const srcFor = (n: number) =>
-    `${toRenderBase(
-      GALLERY_ALTARS
-    )}Altars${n}.jpg?width=${REQ_W}&height=${REQ_H}&resize=cover&quality=${QUALITY}`;
+  const srcFor = (n: number) => {
+    if (variableWidth) {
+      // Raw asset keeps original proportions when we only constrain height in CSS
+      return `${GALLERY_STREETART}StreetArt${n}.jpg`;
+    }
+    const params = new URLSearchParams();
+    params.set("width", String(REQ_W));
+    params.set("height", String(REQ_H));
+    params.set("resize", resizeMode);
+    params.set("quality", String(QUALITY));
+    return `${toRenderBase(
+      GALLERY_STREETART
+    )}StreetArt${n}.jpg?${params.toString()}`;
+  };
+
+  const fitClass =
+    resizeMode === "cover" || resizeMode === "fill"
+      ? "object-cover object-top"
+      : "object-contain object-center";
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -130,17 +155,40 @@ export default function GalleryPanSection({
           <li
             key={n}
             className='relative overflow-hidden rounded-md bg-neutral-900/30'
-            style={{ height: BOX_H, aspectRatio: String(aspect) }}
+            style={
+              variableWidth
+                ? { height: BOX_H, width: "auto", flex: "0 0 auto" }
+                : { height: BOX_H, aspectRatio: String(aspect) }
+            }
           >
-            <Image
-              src={srcFor(n)}
-              alt={`Altars ${n}`}
-              fill
-              className='object-cover object-top' // show more vertical content
-              unoptimized // using Supabase transformer
-              priority={idx < 2}
-              sizes={`${BOX_W}px`}
-            />
+            {variableWidth ? (
+              <Image
+                src={srcFor(n)}
+                alt={`Street Art ${n}`}
+                width={REQ_W}
+                height={REQ_H}
+                className='object-contain object-center'
+                unoptimized // using Supabase transformer
+                priority={idx < 2}
+                loading={idx < 2 ? "eager" : "lazy"}
+                style={{
+                  height: "100%",
+                  width: "auto",
+                  objectFit: "contain",
+                  display: "block",
+                }}
+              />
+            ) : (
+              <Image
+                src={srcFor(n)}
+                alt={`Street Art ${n}`}
+                fill
+                className={fitClass}
+                unoptimized // using Supabase transformer
+                priority={idx < 2}
+                sizes={`${BOX_W}px`}
+              />
+            )}
           </li>
         ))}
       </ul>

@@ -210,6 +210,14 @@ img.demo-img {
     0 0 22px var(--crimson), 0 2px 18px rgba(255, 42, 127, 0.6);
 }
 
+.title-style {
+  position: relative;
+  font-size: var(--step-5);
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.05;
+}
+
 /*  Video */
 /* Fill & clip the middle third */
 .video-cover-middle {

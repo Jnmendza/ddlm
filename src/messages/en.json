@@ -1,0 +1,47 @@
+{
+  "LocaleSwitcher": {
+    "label": "Select language",
+    "en": "EN",
+    "es": "ESP"
+  },
+  "Home": {
+    "loaderTitle": "Loading",
+    "footerIntro": "Visit the",
+    "footerLink": "Gallery"
+  },
+  "Hero": {
+    "galleryLink": "Gallery",
+    "title": "Día de los Muertos",
+    "tagline": "Oaxaca Through My Lens",
+    "subhead": "A visual journey into the heart of Día de los Muertos 2023 💀 — where tradition, <highlight>color</highlight>, and memory collide",
+    "body": "Captured on the streets of Oaxaca, these photos celebrate life, honor the departed, and showcase one of Mexico’s most vibrant cultural traditions.",
+    "scroll": "Scroll",
+    "badge": {
+      "line1": "Oaxaca",
+      "line2": "City",
+      "line3": "2023"
+    }
+  },
+  "Sections": {
+    "altarsPrimary": "Altars & Offerings",
+    "altarsSecondary": "Altars & Offerings",
+    "localsPrimary": "The People of Oaxaca",
+    "localsSecondary": "The People of Oaxaca",
+    "artPrimary": "Cemeteries",
+    "artSecondary": "Cemeteries"
+  },
+  "StreetArtText": {
+    "marquee": "Street Art"
+  },
+  "Gallery": {
+    "filterAll": "all",
+    "filterAllAria": "Filter by all",
+    "filterTagAria": "Filter by {tag}",
+    "backText": "← Back to Home",
+    "backAria": "Back to home",
+    "close": "Close",
+    "previous": "Previous image",
+    "next": "Next image",
+    "openImage": "Open {alt}"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "LocaleSwitcher": {
+    "label": "Seleccionar idioma",
+    "en": "EN",
+    "es": "ESP"
+  },
+  "Home": {
+    "loaderTitle": "Cargando",
+    "footerIntro": "Visita la",
+    "footerLink": "Galería"
+  },
+  "Hero": {
+    "galleryLink": "Galería",
+    "title": "Día de los Muertos",
+    "tagline": "Oaxaca a través de mi lente",
+    "subhead": "Un viaje visual al corazón del Día de los Muertos 2023 💀 — donde la tradición, <highlight>el color</highlight> y la memoria se entrelazan",
+    "body": "Capturadas en las calles de Oaxaca, estas fotos celebran la vida, honran a quienes ya partieron y muestran una de las tradiciones culturales más vibrantes de México.",
+    "scroll": "Desplázate",
+    "badge": {
+      "line1": "Ciudad de",
+      "line2": "Oaxaca",
+      "line3": "2023"
+    }
+  },
+  "Sections": {
+    "altarsPrimary": "Altars Y Ofredas",
+    "altarsSecondary": "Altars Y Ofredas",
+    "localsPrimary": "La Gente de Oaxaca",
+    "localsSecondary": "La Gente de Oaxaca",
+    "artPrimary": "Cementerios",
+    "artSecondary": "Cementerios"
+  },
+  "StreetArtText": {
+    "marquee": "Arte Callejero"
+  },
+  "Gallery": {
+    "filterAll": "todo",
+    "filterAllAria": "Filtrar por todo",
+    "filterTagAria": "Filtrar por {tag}",
+    "backText": "← Volver al inicio",
+    "backAria": "Volver al inicio",
+    "close": "Cerrar",
+    "previous": "Imagen anterior",
+    "next": "Imagen siguiente",
+    "openImage": "Abrir {alt}"
+  }
+}
