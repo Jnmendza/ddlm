@@ -21,6 +21,10 @@ body {
   background: var(--color-ink);
   color: #e5e5e5;
   font-feature-settings: "ss01" on;
+
+  overflow: hidden; /* JS enables after load */
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
+    sans-serif, Apple Color Emoji, Segoe UI Emoji;
 }
 
 /* === Base (same as your CodePen, renamed) === */
@@ -45,12 +49,6 @@ a:link,
 a:visited {
   color: #a50044;
 } /* <- makes every real link green */
-
-body {
-  overflow: hidden; /* JS enables after load */
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
-    sans-serif, Apple Color Emoji, Segoe UI Emoji;
-}
 
 h1 {
   font-size: 5rem;
@@ -268,6 +266,109 @@ img.demo-img {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
+}
+
+/* ==== Gsap Clip Carousel (scoped) ==== */
+/* Wrap the component root with className="gcc" to scope everything below. */
+
+.gcc {
+  /* sizing tokens; tweak per breakpoint in component if needed */
+  --gcc-size: min(80vmin, 600px);
+  --gcc-radius: 20px;
+}
+
+.gcc .container {
+  position: relative;
+  width: var(--gcc-size);
+  height: var(--gcc-size);
+  max-width: 600px;
+  max-height: 600px;
+  overflow: hidden;
+  border-radius: var(--gcc-radius);
+}
+
+/* soft shadow (scoped so it doesn't affect other .shadow uses site-wide) */
+.gcc .shadow {
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.02),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.028), 0 12.5px 10px rgba(0, 0, 0, 0.035),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.042), 0 41.8px 33.4px rgba(0, 0, 0, 0.05),
+    0 100px 80px rgba(0, 0, 0, 0.07);
+}
+
+/* Slides (each SVG sits in here) */
+.gcc .slide,
+.gcc .image {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* slides don't block clicks */
+}
+.gcc .slide svg,
+.gcc .image svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Prevent the <image> element inside SVG from intercepting events */
+.gcc svg image {
+  pointer-events: none;
+}
+
+/* Tabs overlay (clickable dots) */
+.gcc .tabs {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  pointer-events: auto; /* receives clicks */
+}
+
+/* clickable circles at the bottom */
+.gcc .border {
+  fill: #ffffff;
+  fill-opacity: 0;
+  stroke: #ffffff;
+  stroke-width: 2px;
+  stroke-opacity: 0.7;
+  cursor: pointer;
+  transition: stroke-opacity 0.15s ease;
+}
+.gcc .border:hover {
+  stroke-opacity: 1;
+}
+
+/* Next button (floating on the right) */
+.gcc .button {
+  z-index: 101;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateX(50%) translateY(-50%);
+  width: 60px;
+  height: 60px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.2s ease-in-out;
+  background: #fff; /* adjust if you want transparent */
+}
+.gcc .button:hover {
+  transform: translateX(52%) translateY(-48%);
+}
+
+/* ClipCarousel selected tab override */
+.gcc .border.is-selected {
+  stroke: #a50044 !important;
+  stroke-opacity: 1 !important;
+}
+
+/* keep selected tab solid even on hover */
+.gcc .border.is-selected:hover {
+  stroke: #a50044 !important;
+  stroke-opacity: 1 !important;
 }
 
 /* FONTS  */

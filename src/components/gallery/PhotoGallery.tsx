@@ -60,10 +60,7 @@ export default function PhotoGallery() {
   return (
     <main className='min-h-screen bg-dia-pattern text-neutral-100'>
       <div className='mx-auto px-6'>
-        <div
-          className='flex min-h-screen'
-          style={{ minHeight: "100dvh" }}
-        >
+        <div className='flex min-h-screen' style={{ minHeight: "100dvh" }}>
           <aside className='w-44 shrink-0 border-r border-crimson'>
             <div
               className='px-6 py-8'
@@ -149,7 +146,7 @@ export default function PhotoGallery() {
             >
               <div className='grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4'>
                 {isLoading
-                  ? Array.from({ length: 8 }).map((_, i) => (
+                  ? Array.from({ length: 18 }).map((_, i) => (
                       <div
                         key={`skeleton-${i}`}
                         className='relative h-40 w-full sm:h-48 lg:h-52 rounded bg-neutral-800/60 animate-pulse'

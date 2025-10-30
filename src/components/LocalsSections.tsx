@@ -6,32 +6,9 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import ThreeDRing from "./ThreeDRing";
+import ClipCarousel from "./clip-carousel/ClipCarousel";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const toRenderUrl = (
-  url: string,
-  width: number,
-  height: number,
-  opts: {
-    resize?: "cover" | "contain" | "fill";
-    quality?: number;
-    format?: "origin";
-  } = {}
-) => {
-  const u = new URL(url);
-  const key = u.pathname.replace("/storage/v1/object/public/", "");
-  const base = `${u.origin}/storage/v1/render/image/public/${key}`;
-  const params = new URLSearchParams({
-    width: String(width),
-    height: String(height),
-    resize: opts.resize ?? "cover",
-    quality: String(opts.quality ?? 85),
-  });
-  if (opts.format) params.set("format", opts.format);
-  return `${base}?${params.toString()}`;
-};
 
 export default function LocalsSections() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -69,23 +46,6 @@ export default function LocalsSections() {
     return () => ctx.revert();
   }, []);
 
-  // INSIDE the component, right before the return:
-  const ringW = 620;
-  const ringH = 540;
-
-  const ringImages = [
-    "https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/object/public/images/gallery/People/People1.jpg",
-    "https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/object/public/images/gallery/People/People2.jpg",
-    "https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/object/public/images/gallery/People/People3.jpg",
-    "https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/object/public/images/gallery/People/People4.jpg",
-    "https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/object/public/images/gallery/People/People5.jpg",
-    "https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/object/public/images/gallery/People/People6.jpg",
-    "https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/object/public/images/gallery/People/People7.jpg",
-    "https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/object/public/images/gallery/People/People8.jpg",
-    "https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/object/public/images/gallery/People/People9.jpg",
-    "https://nargtjqnjvwljfhrzvmk.supabase.co/storage/v1/object/public/images/gallery/People/People10.jpg",
-  ].map((u) => toRenderUrl(u, ringW, ringH, { resize: "cover", quality: 85 }));
-
   return (
     <section
       ref={sectionRef}
@@ -122,19 +82,35 @@ export default function LocalsSections() {
         />
       </div>
 
-      <h1 className='title-style'>
-        <span className='clamp'>{t("localsPrimary")}</span>
-        <span className='yt'>{t("localsSecondary")}</span>
-      </h1>
-
       {/* Heading block */}
-      <div className='relative z-10 w-full'>
-        <div className='w-full flex justify-center'>
-          <ThreeDRing width={620} height={600} images={ringImages} />
+      <div className='relative z-10 w-full flex items-center justify-center py-12'>
+        <div className='mx-auto max-w-7xl px-6 lg:px-8 w-full'>
+          <div className='flex flex-col sm:flex-row items-center sm:items-start justify-center gap-8'>
+            {/* Left: carousel */}
+            <div className='w-full max-w-[min(92vw,640px)] flex-shrink-0'>
+              <ClipCarousel className='mx-auto' />
+            </div>
+
+            {/* Right: text */}
+            <div className='w-full text-center sm:text-left max-w-[min(92vw,48rem)]'>
+              <h1 className='title-style'>
+                <span className='clamp block'>{t("localsPrimary")}</span>
+                <span className='yt block'>{t("localsSecondary")}</span>
+              </h1>
+
+              <p
+                className='mt-4 text-[--color-sand] leading-relaxed
+               text-[clamp(1rem,0.6vw+0.9rem,1.35rem)]
+               max-w-[70ch] mx-auto sm:mx-0'
+              >
+                {t("localsDescription")}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div aria-hidden className='h-48 md:h-40' />
+      <div aria-hidden className='h-96 md:h-40' />
     </section>
   );
 }

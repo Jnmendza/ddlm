@@ -9,10 +9,11 @@ import { useTranslations } from "next-intl";
 
 import AltarsTextSection from "@/components/PanTextSection";
 import Clamp from "@/components/Clamp";
-import LocalsSections from "@/components/LocalsSections";
 import Hero from "@/components/Hero";
 import PinnedFlipSlider from "@/components/PinnedFlipSlider";
 import { killScrollAnimations } from "@/lib/scroll/cleanup";
+import ClipCarousel from "@/components/clip-carousel/ClipCarousel";
+import LocalsSections from "@/components/LocalsSections";
 
 const GalleryPanSection = dynamic(
   () => import("@/components/GalleryPanSection"),
