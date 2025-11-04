@@ -5,14 +5,16 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import ThreeDRing from "./ThreeDRing";
+import { useTranslations } from "next-intl";
+import ClipCarousel from "./clip-carousel/ClipCarousel";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function PanDeMuertoSection() {
+export default function LocalsSections() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const imgAWrapRef = useRef<HTMLDivElement>(null);
   const imgBWrapRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("Sections");
 
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
@@ -56,7 +58,7 @@ export default function PanDeMuertoSection() {
       >
         <Image
           src='/picudo-1.png'
-          alt=''
+          alt='papel picado decoration'
           fill
           priority
           draggable={false}
@@ -71,7 +73,7 @@ export default function PanDeMuertoSection() {
       >
         <Image
           src='/picudo-2.png'
-          alt=''
+          alt='papel picado decoration'
           fill
           priority
           draggable={false}
@@ -80,44 +82,35 @@ export default function PanDeMuertoSection() {
         />
       </div>
 
-      <h1>
-        <span className='clamp'>Art &amp; Street Scene</span>
-        <span className='yt'>Art Y Street Scene</span>
-      </h1>
-
       {/* Heading block */}
-      <div className='relative z-10 w-full'>
-        <div className='w-full flex justify-center'>
-          <ThreeDRing
-            width={620}
-            height={540}
-            images={[
-              "https://picsum.photos/id/32/600/400",
-              "https://picsum.photos/id/33/600/400",
-              "https://picsum.photos/id/34/600/400",
-              "https://picsum.photos/id/35/600/400",
-              "https://picsum.photos/id/36/600/400",
-              "https://picsum.photos/id/37/600/400",
-              "https://picsum.photos/id/38/600/400",
-              "https://picsum.photos/id/39/600/400",
-              "https://picsum.photos/id/40/600/400",
-              "https://picsum.photos/id/41/600/400",
-            ]}
-          />
+      <div className='relative z-10 w-full flex items-center justify-center py-12'>
+        <div className='mx-auto max-w-7xl px-6 lg:px-8 w-full'>
+          <div className='flex flex-col sm:flex-row items-center sm:items-start justify-center gap-8'>
+            {/* Left: carousel */}
+            <div className='w-full max-w-[min(92vw,640px)] flex-shrink-0'>
+              <ClipCarousel className='mx-auto' />
+            </div>
+
+            {/* Right: text */}
+            <div className='w-full text-center sm:text-left max-w-[min(92vw,48rem)]'>
+              <h1 className='title-style'>
+                <span className='clamp block'>{t("localsPrimary")}</span>
+                <span className='yt block'>{t("localsSecondary")}</span>
+              </h1>
+
+              <p
+                className='mt-4 text-[--color-sand] leading-relaxed
+               text-[clamp(1rem,0.6vw+0.9rem,1.35rem)]
+               max-w-[70ch] mx-auto sm:mx-0'
+              >
+                {t("localsDescription")}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-      <div aria-hidden className='h-24 md:h-40' />
-      <style jsx>
-        {`
-          h1 {
-            position: relative;
-            font-size: var(--step-5);
-            text-transform: uppercase;
-            text-align: center;
-            line-height: 1.05;
-          }
-        `}
-      </style>
+
+      <div aria-hidden className='h-96 md:h-40' />
     </section>
   );
 }

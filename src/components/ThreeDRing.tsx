@@ -2,17 +2,11 @@
 // app/components/ThreeDCarousel.tsx
 "use client";
 
-import {
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useCallback,
-} from "react";
+import { useEffect, useLayoutEffect, useRef, useCallback } from "react";
 import gsap from "gsap";
 
 type ThreeDCarouselProps = {
-  images?: Array<string>;
+  images: Array<string>;
   width?: number; // px
   height?: number; // px
   perspective?: number; // px
@@ -23,25 +17,15 @@ type ThreeDCarouselProps = {
 export default function ThreeDCarousel({
   images,
   width = 300,
-  height = 400,
-  perspective = 2000,
+  height = 600,
+  perspective = 3000,
   styles = "",
   radius, // if not provided, we’ll choose a nice default below
 }: ThreeDCarouselProps) {
   // fallback demo images like the CodePen
-  const imgs = useMemo<Array<string>>(
-    () =>
-      images && images.length > 0
-        ? images
-        : Array.from(
-            { length: 10 },
-            (_, i) => `https://picsum.photos/id/${i + 32}/600/400/`
-          ),
-    [images]
-  );
 
-  const angleStep = 360 / imgs.length;
-  const effectiveRadius = radius ?? Math.round(Math.min(width, height) * 1.25); // feels good
+  const angleStep = 360 / images.length;
+  const effectiveRadius = radius ?? Math.round(Math.min(width, height) * 1.35); // feels good
 
   const stageRef = useRef<HTMLDivElement | null>(null);
   const ringRef = useRef<HTMLDivElement | null>(null);
@@ -173,7 +157,7 @@ export default function ThreeDCarousel({
           rotateY: i * -angleStep,
           transformOrigin: `50% 50% ${effectiveRadius}px`,
           z: -effectiveRadius,
-          backgroundImage: `url(${imgs[i % imgs.length]})`,
+          backgroundImage: `url(${images[i % images.length]})`,
           backgroundPosition: getBgPos(i),
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
@@ -199,7 +183,7 @@ export default function ThreeDCarousel({
       detachHoverHandlers();
       ctx.revert();
     };
-  }, [imgs, angleStep, effectiveRadius, getBgPos]);
+  }, [images, angleStep, effectiveRadius, getBgPos]);
 
   return (
     <div ref={stageRef} className={`three-d-stage ${styles}`}>
@@ -210,7 +194,7 @@ export default function ThreeDCarousel({
         role='region'
       >
         <div ref={ringRef} className='three-d-ring'>
-          {imgs.map((_, i) => (
+          {images.map((_, i) => (
             <div key={i} ref={setImgRef} className='three-d-img' aria-hidden />
           ))}
         </div>

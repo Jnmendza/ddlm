@@ -1,5 +1,3 @@
-import type { Metadata, Viewport } from "next";
-import "./globals.css";
 import {
   Bebas_Neue,
   Cherish,
@@ -7,6 +5,9 @@ import {
   Sancreek,
   Bona_Nova_SC,
 } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: {

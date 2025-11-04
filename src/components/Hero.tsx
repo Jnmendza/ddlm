@@ -1,11 +1,21 @@
 // app/(landing)/sections/LandingHero.tsx
 "use client";
 import Image from "next/image";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
 import BackgroundVideo from "next-video/background-video";
-import heroVideo from "../../videos/hero_muertos.mp4";
+
+import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { LANDING_IMAGES_URL } from "@/lib/data/constants";
+import { killScrollAnimations } from "@/lib/scroll/cleanup";
+import heroVideo from "../../videos/hero_muertos.mp4";
 
 export default function LandingHero() {
+  const t = useTranslations("Hero");
+  const subhead = t.rich("subhead", {
+    highlight: (chunks) => <span className='text-marigold'>{chunks}</span>,
+  });
+
   return (
     <section
       className='
@@ -27,17 +37,18 @@ export default function LandingHero() {
             flex items-center gap-3 text-xs tracking-widest text-crimson
           '
         >
-          <a href='#' className='hover:text-white transition-colors'>
-            EN
-          </a>
-          <span>|</span>
-          <a href='#' className='hover:text-white transition-colors'>
-            ESP
-          </a>
+          <LocaleSwitcher className='flex items-center gap-2' />
           <span className='mx-2' />
-          <a href='/gallery' className='no-underline cursor-pointer'>
-            <span className='text-marigold hover:opacity-90'>GALLERY</span>
-          </a>
+          <Link
+            href='/gallery'
+            className='no-underline cursor-pointer'
+            prefetch={false}
+            onClick={killScrollAnimations}
+          >
+            <span className='text-marigold transition-opacity hover:opacity-90'>
+              {t("galleryLink")}
+            </span>
+          </Link>
         </div>
 
         {/* Doily image + centered text */}
@@ -47,13 +58,18 @@ export default function LandingHero() {
             alt=''
             fill
             priority
+            sizes='80px'
             className='object-contain drop-shadow-[0_10px_40px_rgba(0,0,0,0.45)]'
           />
           <div className='absolute inset-0 grid place-items-center font-bona'>
             <div className='select-none text-center leading-tight text-black text-4xl'>
-              <div className='font-semibold tracking-wide'>Oaxaca</div>
-              <div className='font-semibold tracking-wide'>City</div>
-              <div className='mt-1'>2023</div>
+              <div className='font-semibold tracking-wide'>
+                {t("badge.line1")}
+              </div>
+              <div className='font-semibold tracking-wide'>
+                {t("badge.line2")}
+              </div>
+              <div className='mt-1'>{t("badge.line3")}</div>
             </div>
           </div>
         </div>
@@ -64,6 +80,8 @@ export default function LandingHero() {
             alt=''
             width={120}
             height={120}
+            sizes='120px'
+            style={{ width: "auto", height: "auto" }}
           />
         </div>
         <div className='absolute -bottom-5 -left-5'>
@@ -72,13 +90,15 @@ export default function LandingHero() {
             alt=''
             width={120}
             height={120}
+            sizes='120px'
+            style={{ width: "auto", height: "auto" }}
           />
         </div>
       </aside>
       {/* LEFT/MID OVERLAY — exact figma coords */}
       <div
         className='
-          absolute inset-y-0 left-0 right-[33.333%] z-20   /* CHANGED: was inset-0 */
+          absolute inset-y-0 left-0 right-[33.333%] z-20
         '
       >
         {/* top flourish */}
@@ -88,6 +108,8 @@ export default function LandingHero() {
             alt=''
             width={140}
             height={140}
+            sizes='140px'
+            style={{ width: "auto", height: "auto" }}
           />
         </div>
 
@@ -103,7 +125,7 @@ export default function LandingHero() {
                 font-crimson text-crimson z-0 select-none
               '
             >
-              Dia de los Muertos
+              {t("title")}
             </h1>
             {/* FRONT COPY */}
             <h1
@@ -112,28 +134,24 @@ export default function LandingHero() {
                 font-black text-white
               '
             >
-              Dia de los Muertos
+              {t("title")}
             </h1>
           </div>
         </div>
 
         {/* Tagline at (81,340) */}
         <p className='absolute left-[81px] top-[200px] text-[42px] font-cherish text-amber-400/90'>
-          Oaxaca Through My Lens
+          {t("tagline")}
         </p>
 
         {/* Subhead at (88,500) */}
         <h3 className='absolute left-[88px] top-[460px] max-w-[360px] text-sm font-bold uppercase tracking-widest text-crimson'>
-          A visual journey into the heart of Día de los Muertos 2023 💀 — where
-          tradition, <span className='text-marigold'>color,</span> and memory
-          collide
+          {subhead}
         </h3>
 
         {/* Body at (88,550) */}
         <p className='absolute left-[88px] top-[550px] max-w-[360px] text-sm leading-6 text-neutral-300'>
-          Captured on the streets of Oaxaca, these photos celebrate life, honor
-          the departed, and showcase one of Mexico’s most vibrant cultural
-          traditions.
+          {t("body")}
         </p>
 
         <div className='absolute left-[81px] top-[656px] flex items-center gap-3 text-xs uppercase tracking-widest text-marigold'>
@@ -143,7 +161,7 @@ export default function LandingHero() {
           >
             ↓
           </span>
-          <span>Scroll</span>
+          <span>{t("scroll")}</span>
         </div>
       </div>
       {/* FULL-WIDTH DOTTED BASELINE — responsive, behind the thirds */}

@@ -6,6 +6,8 @@ import { useMemo, useState, useEffect, useCallback } from "react";
 import type { ApiTag } from "@/types/api";
 import { useImages } from "@/hooks/useImages";
 import { useTags } from "@/hooks/useTags";
+import { useTranslations } from "next-intl";
+import { killScrollAnimations } from "@/lib/scroll/cleanup";
 
 type CategorySlug = "all" | ApiTag["slug"];
 
@@ -15,6 +17,7 @@ export default function PhotoGallery() {
   const { images, isLoading: imagesLoading } = useImages({
     slugs: activeCategory !== "all" ? [activeCategory] : [],
   });
+  const t = useTranslations("Gallery");
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -57,7 +60,7 @@ export default function PhotoGallery() {
   return (
     <main className='min-h-screen bg-dia-pattern text-neutral-100'>
       <div className='mx-auto px-6'>
-        <div className='flex min-h-screen'>
+        <div className='flex min-h-screen' style={{ minHeight: "100dvh" }}>
           <aside className='w-44 shrink-0 border-r border-crimson'>
             <div
               className='px-6 py-8'
@@ -83,9 +86,9 @@ export default function PhotoGallery() {
                       : "text-neutral-300 hover:text-neutral-50",
                   ].join(" ")}
                   aria-pressed={activeCategory === "all"}
-                  aria-label='Filter by all'
+                  aria-label={t("filterAllAria")}
                 >
-                  all
+                  {t("filterAll")}
                 </button>
 
                 {/* Tags from Supabase */}
@@ -105,7 +108,7 @@ export default function PhotoGallery() {
                           : "text-neutral-300 hover:text-neutral-50",
                       ].join(" ")}
                       aria-pressed={isActive}
-                      aria-label={`Filter by ${tag.label}`}
+                      aria-label={t("filterTagAria", { tag: tag.label })}
                     >
                       {tag.label.toLowerCase()}
                     </button>
@@ -116,7 +119,7 @@ export default function PhotoGallery() {
               {/* use a hard anchor to avoid SPA issues */}
               <Link
                 href='/'
-                aria-label='Back to home'
+                aria-label={t("backAria")}
                 className='block text-sm font-semibold tracking-wide text-crimson hover:text-white'
                 style={{
                   position: "absolute",
@@ -124,43 +127,51 @@ export default function PhotoGallery() {
                   right: "1.5rem",
                   bottom: "calc(4rem + env(safe-area-inset-bottom))",
                 }}
+                prefetch={false}
+                onClick={killScrollAnimations}
               >
-                ← Back to Home
+                {t("backText")}
               </Link>
             </div>
           </aside>
 
           <section className='flex-1 p-6'>
             <div
-              className='grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4'
-              style={{ padding: 20 }}
+              className='h-full'
+              style={{
+                height: "100dvh",
+                overflowY: lightboxOpen ? "hidden" : "auto",
+                padding: 20,
+              }}
             >
-              {isLoading
-                ? Array.from({ length: 8 }).map((_, i) => (
-                    <div
-                      key={`skeleton-${i}`}
-                      className='relative h-40 w-full sm:h-48 lg:h-52 rounded bg-neutral-800/60 animate-pulse'
-                    />
-                  ))
-                : visibleImages.map((img, idx) => (
-                    <button
-                      key={img.id}
-                      onClick={() => openLightbox(idx)}
-                      className='group relative overflow-hidden cursor-pointer ring-1 ring-neutral-800 focus:outline-none focus:ring-2 focus:ring-crimson'
-                      aria-label={`Open ${img.alt}`}
-                    >
-                      <div className='relative h-40 w-full sm:h-48 lg:h-52'>
-                        <Image
-                          src={img.url}
-                          alt={img.alt}
-                          fill
-                          sizes='(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw'
-                          className='object-cover transition-transform duration-300 group-hover:scale-105'
-                          priority={idx < 8}
-                        />
-                      </div>
-                    </button>
-                  ))}
+              <div className='grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4'>
+                {isLoading
+                  ? Array.from({ length: 18 }).map((_, i) => (
+                      <div
+                        key={`skeleton-${i}`}
+                        className='relative h-40 w-full sm:h-48 lg:h-52 rounded bg-neutral-800/60 animate-pulse'
+                      />
+                    ))
+                  : visibleImages.map((img, idx) => (
+                      <button
+                        key={img.id}
+                        onClick={() => openLightbox(idx)}
+                        className='group relative overflow-hidden cursor-pointer ring-1 ring-neutral-800 focus:outline-none focus:ring-2 focus:ring-crimson'
+                        aria-label={t("openImage", { alt: img.alt })}
+                      >
+                        <div className='relative h-40 w-full sm:h-48 lg:h-52'>
+                          <Image
+                            src={img.url}
+                            alt={img.alt}
+                            fill
+                            sizes='(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw'
+                            className='object-cover transition-transform duration-300 group-hover:scale-105'
+                            priority={idx < 8}
+                          />
+                        </div>
+                      </button>
+                    ))}
+              </div>
             </div>
           </section>
         </div>
@@ -175,21 +186,21 @@ export default function PhotoGallery() {
             className='fixed inset-0 z-50 bg-black/90'
           >
             <button
-              aria-label='Close'
+              aria-label={t("close")}
               onClick={closeLightbox}
               className='absolute right-4 top-4 h-10 w-10 rounded-full bg-neutral-900/70 px-3 py-2 text-sm ring-1 ring-neutral-700 hover:bg-neutral-800 cursor-pointer'
             >
               X
             </button>
             <button
-              aria-label='Previous image'
+              aria-label={t("previous")}
               onClick={goPrev}
               className='absolute left-6 top-1/2 -translate-y-1/2 rounded-full bg-neutral-900/60 px-3 py-2 text-lg ring-1 ring-neutral-700 hover:bg-neutral-800 w-10 h-10 cursor-pointer'
             >
               ‹
             </button>
             <button
-              aria-label='Next image'
+              aria-label={t("next")}
               onClick={goNext}
               className='absolute right-6 top-1/2 -translate-y-1/2 rounded-full bg-neutral-900/60 px-3 py-2 text-lg ring-1 ring-neutral-700 hover:bg-neutral-800 w-10 h-10 cursor-pointer'
             >
