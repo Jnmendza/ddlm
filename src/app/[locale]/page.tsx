@@ -12,7 +12,7 @@ import Clamp from "@/components/Clamp";
 import Hero from "@/components/Hero";
 import PinnedFlipSlider from "@/components/PinnedFlipSlider";
 import { killScrollAnimations } from "@/lib/scroll/cleanup";
-import ClipCarousel from "@/components/clip-carousel/ClipCarousel";
+import { GALLERY_CEMETERIES } from "@/lib/data/constants";
 import LocalsSections from "@/components/LocalsSections";
 
 const GalleryPanSection = dynamic(
@@ -174,12 +174,10 @@ export default function Page() {
       <Clamp />
       <PinnedFlipSlider
         images={[
-          "/altar-ex.jpg",
-          "/skull-ex.png",
-          "/slides/art-3.jpg",
-          "/slides/art-4.jpg",
-          "/slides/art-5.jpg",
-          "/slides/art-6.jpg",
+          `${GALLERY_CEMETERIES}Cemetery3.jpg`,
+          `${GALLERY_CEMETERIES}Cemetery2.jpg`,
+          `${GALLERY_CEMETERIES}Cemetery8.jpg`,
+          `${GALLERY_CEMETERIES}Cemetery9.jpg`,
         ]}
         frameSrc='/golden-frame.png' // transparent center PNG/SVG
         size={720} // inner square; match your frame opening
