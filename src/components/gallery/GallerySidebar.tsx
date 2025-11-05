@@ -49,7 +49,7 @@ export function GallerySidebar({
             const isActive = activeCategory === tag.slug;
             return (
               <button
-                key={tag.id}
+                key={tag.id ?? tag.slug}
                 onClick={() => onSelectCategory(tag.slug as CategorySlug)}
                 className={[
                   "text-left text-xl capitalize tracking-wide transition font-semibold cursor-pointer",

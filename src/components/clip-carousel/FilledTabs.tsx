@@ -32,15 +32,15 @@ export default function FilledTabs({
       style={style}
     >
       <defs>
-        {images.map((_, i) => (
-          <clipPath id={`tab_${i}_clip`} key={`tab_def_${i}`}>
+        {images.map((imgUrl, i) => (
+          <clipPath id={`tab_${i}_clip`} key={`tab_def_${imgUrl}-${i}`}>
             <circle cx={getPosX(i)} cy={getPosY()} r={circle} />
           </clipPath>
         ))}
       </defs>
 
       {images.map((imgUrl, i) => (
-        <g key={`tab_${i}`}>
+        <g key={`tab_${imgUrl}-${i}`}>
           {/* circular thumbnail fill */}
           <g clipPath={`url(#tab_${i}_clip)`}>
             <image width={width} height={height} xlinkHref={imgUrl} />

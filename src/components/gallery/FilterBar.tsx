@@ -1,11 +1,11 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useTags } from "@/hooks/useTags";
 import { ApiTag } from "@/types/api";
 
-export default function FilterBar() {
+function FilterBarContent() {
   const { tags } = useTags();
   const search = useSearchParams();
   const router = useRouter();
@@ -37,7 +37,7 @@ export default function FilterBar() {
         const active = selected.has(t.slug);
         return (
           <button
-            key={t.id}
+            key={t.id ?? t.slug}
             onClick={() => toggle(t.slug)}
             className={[
               "px-3 py-1 rounded-full border text-xs uppercase tracking-wide",
@@ -52,5 +52,13 @@ export default function FilterBar() {
         );
       })}
     </div>
+  );
+}
+
+export default function FilterBar() {
+  return (
+    <Suspense fallback={<div className='py-4 text-xs uppercase opacity-60'>Loading filters…</div>}>
+      <FilterBarContent />
+    </Suspense>
   );
 }

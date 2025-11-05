@@ -51,19 +51,21 @@ export default function LandingHero() {
           </Link>
         </div>
 
-        {/* Doily image + centered text */}
-        <div className='absolute bottom-[180px] -right-20 h-80 w-80 pointer-events-none'>
-          <Image
-            src={`${LANDING_IMAGES_URL}ylw-pattern.png`}
-            alt=''
-            fill
-            priority
-            sizes='80px'
-            className='object-contain drop-shadow-[0_10px_40px_rgba(0,0,0,0.45)]'
-          />
-          <div className='absolute inset-0 grid place-items-center font-bona'>
-            <div className='select-none text-center leading-tight text-black text-4xl'>
-              <div className='font-semibold tracking-wide'>
+        {/* Doily image + text centered within right column */}
+        <div className='absolute inset-0 flex items-center justify-center pointer-events-none'>
+          <div className='flex w-80 flex-col items-center font-bona'>
+            <div className='relative h-80 w-80'>
+              <Image
+                src={`${LANDING_IMAGES_URL}sugaSkull.png`}
+                alt=''
+                fill
+                priority
+                sizes='80px'
+                className='object-contain drop-shadow-[0_10px_40px_rgba(0,0,0,0.45)]'
+              />
+            </div>
+            <div className='mt-6 select-none text-center text-4xl leading-tight text-white'>
+              <div className='font-semibold tracking-wide text-shadow-lg/30'>
                 {t("badge.line1")}
               </div>
               <div className='font-semibold tracking-wide'>

@@ -194,8 +194,13 @@ export default function ThreeDCarousel({
         role='region'
       >
         <div ref={ringRef} className='three-d-ring'>
-          {images.map((_, i) => (
-            <div key={i} ref={setImgRef} className='three-d-img' aria-hidden />
+          {images.map((src, i) => (
+            <div
+              key={`${src}-${i}`}
+              ref={setImgRef}
+              className='three-d-img'
+              aria-hidden
+            />
           ))}
         </div>
       </div>
