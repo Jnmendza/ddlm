@@ -123,7 +123,7 @@ export default function PinnedFlipSlider({
           {/* Slides container (under the frame) */}
           <div ref={sliderRef} className='pf-slider'>
             {images.map((src, i) => (
-              <div key={i} className='pf-slide'>
+              <div key={`${src}-${i}`} className='pf-slide'>
                 <Image
                   src={src}
                   alt=''

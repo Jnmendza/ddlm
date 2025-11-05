@@ -129,7 +129,7 @@ export default function ComparsasParades() {
           <div className='images'>
             {images.map((image, idx) => (
               <Image
-                key={idx}
+                key={`${image.url}-${idx}`}
                 data-speed={image.dataSpeed}
                 src={image.url}
                 alt={`image-of-altar${idx + 1}`}

@@ -153,7 +153,7 @@ export default function GalleryPanSection({
       <ul className='pan-wrapper image-row flex gap-3'>
         {indices.map((n, idx) => (
           <li
-            key={n}
+            key={`street-${n}`}
             className='relative overflow-hidden rounded-md bg-neutral-900/30'
             style={
               variableWidth

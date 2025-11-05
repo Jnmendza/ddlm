@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Oaxaca 2023
 
-## Getting Started
+## Elevator Pitch
 
-First, run the development server:
+Immerse yourself in Oaxaca's Día de los Muertos through an interactive photo essay crafted for large-format storytelling. The site blends cinematic scroll effects, localized copy, and Supabase-powered galleries to surface the most evocative moments from 2023. Built for high-impact visuals, the experience pairs responsive video, performant media delivery, and a handcrafted component system.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Tech Stack
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Layer     | Choice                                       | Notes                                                                |
+| --------- | -------------------------------------------- | -------------------------------------------------------------------- |
+| Framework | Next.js 15 (React 19, App Router, Turbopack) | Server/Client components, localized routing, background video        |
+| Database  | Supabase Postgres + Storage                  | Photo metadata, tags, and asset delivery                             |
+| Auth      | Supabase Auth via `@supabase/ssr`            | Cookie-aware client/server helpers, ready for session-based features |
+| Hosting   | Vercel (recommended)                         | Edge-friendly Next.js deployment with media CDN                      |
+| CI        | TBD                                          | Add GitHub Actions or Vercel Checks to mirror lint/build pipeline    |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Quickstart
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+2. **Configure environment**
+   Create `.env.local` and populate the Supabase keys (ask the project owner for values):
+   ```bash
+   NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+   ```
+3. **Run the dev server**
+   ```bash
+   npm run dev
+   ```
+   Turbopack and `next-video` watcher run together; visit http://localhost:3000.
+4. **Build for production**
+   ```bash
+   npm run build
+   ```
+5. **Lint / smoke-test**
+   ```bash
+   npm run lint
+   ```
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
+| Script          | Description                                                                         |
+| --------------- | ----------------------------------------------------------------------------------- |
+| `npm run dev`   | Starts the Turbopack dev server and watches local videos with `next-video sync -w`. |
+| `npm run build` | Produces an optimized production build via `next build --turbopack`.                |
+| `npm run start` | Serves the production build using Next.js.                                          |
+| `npm run lint`  | Runs the repository-wide ESLint ruleset.                                            |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Architecture Overview
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `src/app`: Next.js App Router pages, localized routes (`[locale]`), and API routes for images/tags.
+- `src/components`: Reusable React components styled with Tailwind utilities (Hero, galleries, locale switcher).
+- `src/hooks`: SWR-powered data hooks (`useImages`, `useTags`) for Supabase-backed endpoints.
+- `src/lib`: Shared utilities for motion, media, scroll cleanup, and Supabase client wiring.
+- `src/messages`: i18n message catalogs (EN/ES) consumed by `next-intl`.
+- `src/i18n`: Locale definitions, type helpers, and middleware configuration.
+- `public` / `videos`: Static assets and high-res background footage synced with `next-video`.
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Branching**: Fork or branch off `main`; keep changes scoped and rebased.
+- **Commits**: Follow Conventional Commits (`feat:`, `fix:`, `chore:`) so CI and changelogs stay readable.
+- **Quality**: Run `npm run lint` before pushing; ensure new UI follows established Tailwind/TypeScript patterns.
+- **PR Flow**: Open a draft PR early, request review when ready, and include screenshots or Looms for visual updates.
