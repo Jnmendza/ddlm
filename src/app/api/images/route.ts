@@ -21,9 +21,6 @@ type ImageRow = Tables<"images">;
 type TagRow = Tables<"tags">;
 type ImageTagRow = Tables<"image_tags">;
 
-// RPC return shape (for mode=all)
-// type RpcImageId = { id: string };
-
 // Shape returned to the client
 export type ApiImage = Pick<
   ImageRow,
@@ -41,10 +38,15 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new globalThis.URL(req.url);
   const tagsParam = searchParams.get("tags"); // "streets,night"
   const modeAll = searchParams.get("mode") === "all"; // AND logic
-  const limitRaw = Number(searchParams.get("limit") ?? "50");
+  const limitRaw = Number(searchParams.get("limit") ?? "20");
+  const pageRaw = Number(searchParams.get("page") ?? "1");
+
   const limit = Number.isFinite(limitRaw)
-    ? Math.min(Math.max(limitRaw, 1), 200)
-    : 50;
+    ? Math.min(Math.max(limitRaw, 1), 100)
+    : 20;
+  const page = Number.isFinite(pageRaw) ? Math.max(pageRaw, 1) : 1;
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
 
   try {
     // No tag filters — list all published
@@ -56,7 +58,7 @@ export async function GET(req: NextRequest) {
           .eq("published", true)
           .order("position", { ascending: true, nullsFirst: false })
           .order("created_at", { ascending: false })
-          .limit(limit);
+          .range(from, to);
 
       if (error) throw error;
 
@@ -107,7 +109,7 @@ export async function GET(req: NextRequest) {
           .eq("published", true)
           .order("position", { ascending: true, nullsFirst: false })
           .order("created_at", { ascending: false })
-          .limit(limit);
+          .range(from, to);
 
       if (error) throw error;
 
@@ -143,7 +145,7 @@ export async function GET(req: NextRequest) {
       .from("image_tags")
       .select("*")
       .in("tag_id", tagIds)
-      .limit(2000);
+      .limit(2000); // This limit might need to be higher or paginated too if there are MANY links
 
     if (lerr) throw lerr;
 
@@ -161,7 +163,7 @@ export async function GET(req: NextRequest) {
       .eq("published", true)
       .order("position", { ascending: true, nullsFirst: false })
       .order("created_at", { ascending: false })
-      .limit(limit);
+      .range(from, to);
 
     if (error) throw error;
 

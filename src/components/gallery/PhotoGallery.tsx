@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { useImages } from "@/hooks/useImages";
 import { useTags } from "@/hooks/useTags";
@@ -12,7 +12,14 @@ import type { CategorySlug } from "./types";
 export default function PhotoGallery() {
   const [activeCategory, setActiveCategory] = useState<CategorySlug>("all");
   const { tags, isLoading: tagsLoading } = useTags();
-  const { images, isLoading: imagesLoading } = useImages({
+  const {
+    images,
+    isLoading: imagesLoading,
+    isLoadingMore,
+    isReachingEnd,
+    setSize,
+    size,
+  } = useImages({
     slugs: activeCategory !== "all" ? [activeCategory] : [],
   });
   const t = useTranslations("Gallery");
@@ -20,8 +27,30 @@ export default function PhotoGallery() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
+  // We need a ref for the load-more trigger
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  // Infinite scroll observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isReachingEnd && !isLoadingMore) {
+          setSize((prev) => prev + 1);
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isReachingEnd, isLoadingMore, setSize]);
+
   const visibleImages = useMemo(() => images, [images]);
-  const isLoading = tagsLoading || imagesLoading;
+  // Initial loading state
+  const isLoading = tagsLoading || (imagesLoading && size === 1);
 
   useEffect(
     () => () => {
@@ -89,6 +118,11 @@ export default function PhotoGallery() {
                 onOpenImage={openLightbox}
                 t={t}
               />
+              
+              {/* Load more trigger */}
+              <div ref={loadMoreRef} className="h-10 w-full flex items-center justify-center mt-4">
+                 {isLoadingMore && <div className="animate-pulse text-neutral-500">Loading more...</div>}
+              </div>
             </div>
           </section>
         </div>
